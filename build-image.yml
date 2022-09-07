@@ -1,0 +1,23 @@
+---
+- name: Build Container Image 
+  hosts: all 
+  vars:
+    build_path: /awx-demo
+  tasks: 
+  - name: Create Working directory
+    file: 
+      path: "{{ build_path }}"
+      mode: 0775
+      state: directory
+  - name: Create Dockerfile 
+    copy:
+      content:  |
+        FROM  centos:centos7
+        LABEL MAINTAINER="awx@ansible-training"
+        RUN   yum install httpd -y && yum clean all && echo hello world > /var/www/html/index.html
+        EXPOSE 80
+        CMD ["httpd","-D","FOREGROUND"]
+      dest: "{{ build_path }}/Dockerfile"
+  - name: Building container image  
+    command:  docker image build -t my-app:latest {{ build_path }}
+...
