@@ -1,0 +1,17 @@
+---
+- name: Build Container Image 
+  hosts: all 
+  tasks: 
+  - name: Create container
+    command: docker container run -d -P my-app:latest 
+    register: container 
+  - debug:
+      msg: "{{ container.stdout  }}"
+  - name: Inspect container
+    command: docker container inspect {{ container.stdout }}
+    register: inspect 
+  - debug:
+      msg: "{{ inspect.stdout_lines }} "
+
+
+...
