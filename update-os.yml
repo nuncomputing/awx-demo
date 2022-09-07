@@ -1,0 +1,22 @@
+---
+- name: Update OS 
+  hosts: all 
+  tasks: 
+  - name: upgrade all packages, excluding kernel related packages
+    yum:
+      name: '*'
+      state: latest
+      exclude: kernel*
+  - name: Install Packages 
+    yum:
+      name: "{{ item }}"
+      state: latest
+    loop:
+    - epel-release
+    - docker 
+  - name: Manage services
+    service:
+      name:   docker
+      state:  started
+      enabled: true
+...
