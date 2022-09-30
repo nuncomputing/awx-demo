@@ -1,5 +1,5 @@
 ---
-yygnn- name: Update OS 
+- name: Update OS 
   hosts: all 
   tasks: 
   - name: upgrade all packages, excluding kernel related packages
